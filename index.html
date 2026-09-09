@@ -12,15 +12,34 @@
 <body style="font-family: 'Inter', sans-serif;">
 
     <!-- Navbar -->
-    <nav class="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-100">
-        <img src="./img/logo.png" alt="Logo" class="w-32">
-        <div class="space-x-8 text-gray-600 font-medium hidden md:block">
-            <a href="#" class="text-emerald-600 border-b-2 border-emerald-600 pb-1">Feed</a>
-            <a href="#" class="hover:text-emerald-600 transition">Profile</a>
+    <nav class="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-100 sticky top-0 z-50">
+        <!-- โลโก้ (กดกลับหน้าหลัก) -->
+        <a href="./index.html"><img src="./img/logo.png" alt="Logo" class="w-32"></a>
+        
+        <!-- เมนูตรงกลาง พร้อมเส้นใต้สไลด์ -->
+        <div class="relative hidden md:flex items-center gap-8 text-gray-600 font-medium" id="nav-menu">
+            <!-- ใส่ href ให้ถูกต้อง -->
+            <a href="./index.html" class="nav-item text-emerald-600 pb-1 transition-colors">Feed</a>
+            <a href="./profile.html" class="nav-item hover:text-emerald-600 pb-1 transition-colors">Profile</a>
+            
+            <div id="nav-indicator" class="absolute bottom-0 left-0 h-[2px] bg-emerald-600 transition-all duration-300 ease-out"></div>
         </div>
-        <button class="bg-[#10B981] hover:bg-emerald-600 text-white px-6 py-2 rounded-full font-bold text-sm transition">
-            เข้าสู่ระบบ
-        </button>
+        
+        <!-- Auth Container (สลับปุ่มตามสถานะล็อกอิน) -->
+        <div class="flex items-center gap-4">
+            <!-- ปุ่มเข้าสู่ระบบ -->
+            <a href="./login.html" id="btn-login" class="bg-[#10B981] hover:bg-emerald-600 text-white px-6 py-2 rounded-full font-bold text-sm transition block">
+                เข้าสู่ระบบ
+            </a>
+            
+            <!-- ไอคอนโปรไฟล์ (ซ่อนไว้ก่อน จะแสดงเมื่อล็อกอินแล้วผ่าน TypeScript) -->
+            <a href="./profile.html" id="btn-profile" class="hidden w-10 h-10 bg-gray-100 rounded-full items-center justify-center text-gray-500 hover:bg-gray-200 transition cursor-pointer">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            </a>
+            
+            <!-- ปุ่มออกจากระบบ (ซ่อนไว้ก่อนเช่นกัน) -->
+            <button id="btn-logout" class="hidden text-sm text-red-500 hover:text-red-700 font-medium cursor-pointer">ออกจากระบบ</button>
+        </div>
     </nav>
 
     <!-- Hero Section -->
@@ -57,11 +76,16 @@
                     <span class="border border-[#10B981] text-[#10B981] px-3 py-1.5 rounded-full text-[10px] md:text-xs font-semibold bg-white hover:bg-[#10B981] hover:text-white cursor-pointer transition-colors duration-300">Engineering Manager</span>
                 </div>
 
-                <h3 class="text-[1.75rem] font-bold mb-2 text-black">ลงทะเบียนเพื่อรีวิว</h3>
-                <p class="text-gray-500 mb-8 text-sm md:text-base leading-relaxed">ระบบยืนยันสิทธินักศึกษาผ่านอีเมลมหาวิทยาลัย<br>เพื่อการสร้างสรรค์และแบ่งปันประสบการณ์ฝึกงานจริงที่น่าเชื่อถือ</p>
-                <button class="bg-[#10b981] hover:bg-emerald-600 text-white px-8 py-2.5 rounded-full font-bold text-sm transition shadow-md hover:shadow-lg">
-                    เข้าสู่ระบบ
-                </button>
+                <div id="register-promo">
+                    <h3 class="text-[1.75rem] font-bold mb-2 text-black">ลงทะเบียนเพื่อรีวิว</h3>
+                    <p class="text-gray-500 mb-8 text-sm md:text-base leading-relaxed">
+                        ระบบยืนยันสิทธินักศึกษาผ่านอีเมลมหาวิทยาลัย<br>
+                        เพื่อการสร้างสรรค์และแบ่งปันประสบการณ์ฝึกงานจริงที่น่าเชื่อถือ
+                    </p>
+                    <a href="./login.html" class="inline-block bg-[#10b981] hover:bg-emerald-600 text-white px-8 py-2.5 rounded-full font-bold text-sm transition shadow-md hover:shadow-lg">
+                        เข้าสู่ระบบ
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -105,7 +129,7 @@
     <section class=" mx-auto px-4 py-12 bg-[#F3F5F7]">
         <div class="text-center mb-6 mt-4">
             <h2 class="text-3xl font-extrabold mb-6">แนะนำตำแหน่งงาน และประสบการณฝึกงาน</h2>
-            <p class="font-extrabold text-black/50"> ดูรีวิว แลกเปลี่ยนประสบการณ์<a href="#" class="text-[#10B981]/80 font-extrabold"> บริษัททั้งหมด</a></p>
+            <p class="font-extrabold text-black/50"> ดูรีวิว แลกเปลี่ยนประสบการณ์<a href="./allCompany.html" class="text-[#10B981]/80 font-extrabold"> บริษัททั้งหมด</a></p>
         </div>
 
         <!-- Slider Wrapper -->
@@ -151,4 +175,4 @@
 
     <script type="module" src="./js/main.js"></script>
 </body>
-</html>wight
+</html>

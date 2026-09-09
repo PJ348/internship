@@ -62,3 +62,26 @@ export class CompanyManager {
   }
   public getAllCompanies(): Company[] { return this.companies; }
 }
+
+// เพิ่ม Interface สำหรับข้อมูลนิสิต
+export interface StudentProfile {
+  id: string;
+  studentId: string;
+  name: string;
+  linkedIn_Profile: string;
+  facebook: string;
+  email_uni: string;
+  email_personal: string;
+  password: string;
+  reviews: Review[];
+}
+
+// โครงสร้างของข้อมูลรีวิว 1 รายการ
+export interface Review {
+  id: string;
+  companyId: string;
+  companyName: string;
+  rating: number;
+  content: string;
+  date: string;
+}
