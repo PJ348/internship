@@ -39,4 +39,23 @@ export declare class CompanyManager {
     loadMockData(mockData: any[]): void;
     getAllCompanies(): Company[];
 }
+export interface StudentProfile {
+    id: string;
+    studentId: string;
+    name: string;
+    linkedIn_Profile: string;
+    facebook: string;
+    email_uni: string;
+    email_personal: string;
+    password: string;
+    reviews: Review[];
+}
+export interface Review {
+    id: string;
+    companyId: string;
+    companyName: string;
+    rating: number;
+    content: string;
+    date: string;
+}
 //# sourceMappingURL=models.d.ts.map
