@@ -21,62 +21,198 @@
         }
     </style>
 </head>
-<body>
-    <!-- Navbar -->
-    <nav class="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-100 sticky top-0 z-50 bg-fixed">
-        <!-- โลโก้ (กดกลับหน้าหลัก) -->
-        <a href="./index.html"><img src="./img/logo.png" alt="Logo" class="w-32"></a>
+<body class="bg-[#F3F5F7] min-h-screen">
+    <nav class="flex items-center justify-between px-4 md:px-8 py-4 bg-white border-b border-gray-100 sticky top-0 z-50">
+        <!-- โลโก้ -->
+        <a href="./index.html">
+            <img src="./img/logo.png" alt="Logo" class="w-28 md:w-32 h-auto">
+        </a>
         
-        <!-- เมนูตรงกลาง พร้อมเส้นใต้สไลด์ -->
-        <div class="relative hidden md:flex items-center gap-8 text-gray-600 font-medium" id="nav-menu">
-            <!-- ใส่ href ให้ถูกต้อง -->
+        <!-- เมนูตรงกลาง (แสดงบนจอ md ขึ้นไป) -->
+        <div class="relative md:flex items-center gap-8 text-gray-600 font-medium" id="nav-menu">
             <a href="./index.html" class="nav-item hover:text-emerald-600 pb-1 transition-colors">Feed</a>
             <a href="./profile.html" class="nav-item text-emerald-600 pb-1 transition-colors">Profile</a>
-            
             <div id="nav-indicator" class="absolute bottom-0 left-0 h-[2px] bg-emerald-600 transition-all duration-300 ease-out"></div>
         </div>
         
-        <!-- Auth Container (สลับปุ่มตามสถานะล็อกอิน) -->
-        <div class="flex items-center gap-4">
+        <!-- ฝั่งขวา: Auth & ปุ่มเปิดเมนูกรอบมือถือ -->
+        <div class="flex items-center gap-3 md:gap-4">
             <!-- ปุ่มเข้าสู่ระบบ -->
-            <a href="./login.html" id="btn-login" class="bg-[#10B981] hover:bg-emerald-600 text-white px-6 py-2 rounded-full font-bold text-sm transition block">
+            <a href="./login.html" id="btn-login" class="hidden bg-[#10B981] hover:bg-emerald-600 text-white px-5 py-2 rounded-full font-bold text-sm transition">
                 เข้าสู่ระบบ
             </a>
             
-            <!-- ไอคอนโปรไฟล์ (ซ่อนไว้ก่อน จะแสดงเมื่อล็อกอินแล้วผ่าน TypeScript) -->
-            <a href="./profile.html" id="btn-profile" class="hidden w-10 h-10 bg-gray-100 rounded-full items-center justify-center text-gray-500 hover:bg-gray-200 transition cursor-pointer">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            <!-- ไอคอนโปรไฟล์ -->
+            <a href="./profile.html" id="btn-profile" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 shrink-0 hover:bg-gray-300 transition">
+                <i class="fa-regular fa-user text-base md:text-lg"></i>
             </a>
             
-            <!-- ปุ่มออกจากระบบ (ซ่อนไว้ก่อนเช่นกัน) -->
-            <button id="btn-logout" class="hidden text-sm text-red-500 hover:text-red-700 font-medium cursor-pointer">ออกจากระบบ</button>
+            <!-- ปุ่มออกจากระบบ -->
+            <button id="btn-logout" class="hidden text-sm text-red-500 hover:text-red-700 font-medium cursor-pointer">
+                ออกจากระบบ
+            </button>
         </div>
     </nav>
 
-    <main class="bg-[#F3F5F7] w-screen h-full p-10 px-40 pb-48 z-0">
+    <main class="w-full h-full p-10 px-40 pb-48 z-0">
         <!-- ปุ่มย้อนกลับ (บริษัททั้งหมด) -->
-        <div>
-            <a href="./allCompany.html" class="font-thai inline-flex items-center gap-3 text-black/50 hover:text-gray-700 font-normal text-2xl transition-colors">
-                <i class="fa-solid fa-chevron-left text-4xl font-extrabold"></i>
-                บริษัททั้งหมด
-            </a>
-        </div>
+        <a title="toallcompanybtn" href="./allCompany.html" class="font-thai inline-flex items-center gap-3 text-black/50 hover:text-gray-700 font-normal text-2xl transition-colors">
+            <i class="fa-solid fa-chevron-left text-4xl font-extrabold"></i>
+            บริษัททั้งหมด
+        </a>
 
-        <div class="flex bg-black w-full h-screen mt-10">
-            <div class="flex-col w-[600px]">
+        <section class="flex flex-col lg:flex-row w-full mt-10 gap-6 items-start">
+            <!--ฝั่งซ้าย-->
+            <div class="w-full lg:w-[600px] shrink-0">
                 <!--profile image-->
-                <div class="flex flex-col items-center bg-white w-full h-[525px] rounded-4xl p-12 gap-5">
+                <aside class="flex flex-col items-center bg-white w-full h-[525px] rounded-4xl p-12 gap-5 shadow-sm">
                     <img src="./img/profile.jpg" alt="profileimage" class="rounded-full size-[300px] object-cover"/>
-                    <p class="text-2xl font-semibold font-thai mt-8">นายแฮมมี่ มหศัจรรศ์</p>
-                    <tag class="bg-[#10B981] text-white font-thai rounded-4xl px-10 py-3 font-semibold text-[14px] tracking-widest">ฝึกงาน</tag>
-                </div>
+                    <p class="text-2xl font-semibold font-thai mt-8">นายแฮมมี่ มหัศจรรย์</p>
+                    <span class="bg-[#10B981] text-white font-thai rounded-4xl px-10 py-3 font-semibold text-[14px] tracking-widest">ฝึกงาน</span>
+                </aside>
 
-                <div class="flex flex-col bg-white w-full h-[373px] mt-5 rounded-4xl p-10">
+                <aside class="flex flex-col bg-white w-full h-[373px] mt-5 rounded-4xl p-10 gap-5 shadow-sm">
                     <h1 class="text-2xl font-semibold font-eng">CONTACT INFORMATION</h1>
-                </div>
-
+                    <!-- Email -->
+                    <div class="flex items-center gap-4 mb-5">
+                        <div class="size-14 rounded-full bg-[#A3F3D1] text-[#0B5C43] flex items-center justify-center shrink-0">
+                            <i class="fa-regular fa-envelope text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="text-[18px] font-semibold text-gray-800">Email Address</p>
+                            <p class="text-[18px] text-gray-500">a.mercer@up.ac.th</p>
+                        </div>
+                    </div>
+                    <!-- LinkedIn -->
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="flex items-center gap-4">
+                            <div class="size-14 rounded-full bg-[#A3F3D1] text-[#0B5C43] flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-link text-lg"></i>
+                            </div>
+                            <div>
+                                <p class="text-[18px] font-semibold text-gray-800">LinkedIn Profile</p>
+                                <a href="#" class="text-[18px] text-gray-500 hover:text-[#00B98B]">linkedin.com/in/alexmercer</a>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-gray-400 text-2xl"></i>
+                    </div>
+                    <!-- Facebook -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="size-14 rounded-full bg-[#A3F3D1] text-[#0B5C43] flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-globe text-lg"></i>
+                            </div>
+                            <div>
+                                <p class="text-[18px] font-semibold text-gray-800">Facebook</p>
+                                <a href="#" class="text-[18px] text-gray-500 hover:text-[#00B98B]">facebook.com/alex.m</a>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-gray-400 text-2xl"></i>
+                    </div>    
+                </aside>
             </div>
-        </div>
+
+            <!--ฝั่งขวา-->
+            <div class="flex-1 lg:w-[850px]">
+                <div class="text-[40px] font-eng font-semibold z-10 mb-3">My Reviews</div>
+                <!-- Container สำหรับรวมการ์ดทั้งหมด -->
+                <aside class="space-y-4">
+                    <!-- Card 1 -->
+                    <div class="bg-white rounded-4xl w-full min-h-[259px] sm:p-8 border border-gray-100 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 shrink-0">
+                                    <i class="fa-regular fa-user text-lg"></i>
+                                </div>
+                                <h4 class="font-medium tracking-wider text-2xl text-gray-900 font-thai">นายแฮมมี่ มหัศจรรย์</h4>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-400">31 / 08 /2026</span>
+                        </div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="border border-[#10B981] text-[#10B981] text-xs font-semibold px-4 py-1.5 rounded-full">
+                                Frontend Developer
+                            </span>
+                            <div class="bg-[#EEF2FF] px-3.5 py-1.5 rounded-full flex items-center gap-2">
+                                <div class="flex gap-1 text-[#10B981]">
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                </div>
+                                <span class="text-xs font-bold text-gray-900">5.0</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-900 font-eng font-semibold text-[14px]">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nec est urna. Nunc vehicula elit vel est vehicula scelerisque. Suspendisse non elementum ante. Sed libero leo, blandit at diam a, gravida aliquam tellus. Cras quis ornare odio, eget consectetur quam. Aenean tristique sed ex non porta. Nam molestie at quam non luctus. Etiam laoreet, turpis at semper finibus, enim erat semper nisl, sed efficitur diam nisl ut ligula. Proin tincidunt fermentum mauris, non cursus odio convallis ut. Nulla sodales ante eu suscipit mattis. Sed euismod tristique neque vel ornare.
+                        </p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-white rounded-4xl w-full min-h-[259px] sm:p-8 border border-gray-100 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 shrink-0">
+                                    <i class="fa-regular fa-user text-lg"></i>
+                                </div>
+                                <h4 class="font-medium tracking-wider text-2xl text-gray-900 font-thai">นายแฮมมี่ มหัศจรรย์</h4>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-400">31 / 08 /2026</span>
+                        </div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="border border-[#10B981] text-[#10B981] text-xs font-semibold px-4 py-1.5 rounded-full">
+                                Frontend Developer
+                            </span>
+                            <div class="bg-[#EEF2FF] px-3.5 py-1.5 rounded-full flex items-center gap-2">
+                                <div class="flex gap-1 text-[#10B981]">
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                </div>
+                                <span class="text-xs font-bold text-gray-900">5.0</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-900 font-eng font-semibold text-[14px]">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nec est urna. Nunc vehicula elit vel est vehicula scelerisque. Suspendisse non elementum ante. Sed libero leo, blandit at diam a, gravida aliquam tellus. Cras quis ornare odio, eget consectetur quam. Aenean tristique sed ex non porta. Nam molestie at quam non luctus. Etiam laoreet, turpis at semper finibus, enim erat semper nisl, sed efficitur diam nisl ut ligula. Proin tincidunt fermentum mauris, non cursus odio convallis ut. Nulla sodales ante eu suscipit mattis. Sed euismod tristique neque vel ornare.
+                        </p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-white rounded-4xl w-full min-h-[259px] sm:p-8 border border-gray-100 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 shrink-0">
+                                    <i class="fa-regular fa-user text-lg"></i>
+                                </div>
+                                <h4 class="font-medium tracking-wider text-2xl text-gray-900 font-thai">นายแฮมมี่ มหัศจรรย์</h4>
+                            </div>
+                            <span class="text-sm font-semibold text-gray-400">31 / 08 /2026</span>
+                        </div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="border border-[#10B981] text-[#10B981] text-xs font-semibold px-4 py-1.5 rounded-full">
+                                Frontend Developer
+                            </span>
+                            <div class="bg-[#EEF2FF] px-3.5 py-1.5 rounded-full flex items-center gap-2">
+                                <div class="flex gap-1 text-[#10B981]">
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                </div>
+                                <span class="text-xs font-bold text-gray-900">5.0</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-900 font-eng font-semibold text-[14px]">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nec est urna. Nunc vehicula elit vel est vehicula scelerisque. Suspendisse non elementum ante. Sed libero leo, blandit at diam a, gravida aliquam tellus. Cras quis ornare odio, eget consectetur quam. Aenean tristique sed ex non porta. Nam molestie at quam non luctus. Etiam laoreet, turpis at semper finibus, enim erat semper nisl, sed efficitur diam nisl ut ligula. Proin tincidunt fermentum mauris, non cursus odio convallis ut. Nulla sodales ante eu suscipit mattis. Sed euismod tristique neque vel ornare.
+                        </p>
+                    </div>
+
+                </aside>
+            </div>
+        </section>
 
     </main>
 </body>
