@@ -89,54 +89,152 @@
                 </div>
             </aside>
 
-            <!-- ฝั่งขวา (Main Content Area) -->
-            <section class="flex-1 w-full">
-                <h1 class="text-3xl 2xl:text-4xl font-eng font-semibold mb-5 text-gray-900">My Reviews</h1>
-                
-                <div class="bg-white rounded-3xl w-full p-8 2xl:p-10 border border-gray-100/80 shadow-sm font-eng space-y-6">
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-semibold text-gray-400">31 / 08 / 2026</span>
-                    </div>
-
-                    <div>
-                        <h3 class="text-lg 2xl:text-xl font-semibold text-gray-500 mb-2">Internship Position</h3>
-                        <div class="bg-gray-50 w-full p-4 2xl:p-5 rounded-2xl text-lg 2xl:text-xl font-semibold border border-gray-200/60 text-gray-800 shadow-inner">
-                            Frontend Developer
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 class="text-lg 2xl:text-xl font-semibold text-gray-500 mb-3">Overall Rating</h3>
-                        <div class="flex flex-col items-center justify-center space-y-3 py-4">
-                            <h1 class="font-extrabold text-5xl 2xl:text-6xl font-eng text-gray-900">5.0</h1>
-                            <div class="flex gap-1.5 text-[#10B981] text-3xl 2xl:text-4xl">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
+            <!--ฝั่งขวา-->
+            <div class="flex-1 lg:w-[850px]">
+                <div class="flex justify-between items-center">
+                    <div class="text-[40px] font-eng font-semibold z-10 mb-3">My Reviews</div>
+                    <span class="inline-block bg-[#10B981] text-white rounded-full px-4 py-3 font-semibold text-xs 2xl:text-sm tracking-wider hover:bg-emerald-600 hover:cursor-pointer">เขียนรีวิว</span>
+                </div>
+                <!-- Container สำหรับรวมการ์ดทั้งหมด -->
+                <aside class="space-y-4">
+                    <!-- Card 1 -->
+                    <div class="bg-white rounded-4xl w-full min-h-[259px] sm:p-8 border border-gray-100 shadow-sm pointer-events-none">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 shrink-0">
+                                    <i class="fa-regular fa-user text-lg"></i>
+                                </div>
+                                <h4 class="font-medium tracking-wider text-2xl text-gray-900 font-thai">นายแฮมมี่ มหัศจรรย์</h4>
+                            </div>
+                            <div class="space-x-2">
+                                <span class="inline-block text-[#10B981] font-semibold text-xs 2xl:text-sm">เขียนรีวิว</span>
+                                <span class="text-sm font-semibold text-gray-400">31 / 08 /2026</span>
                             </div>
                         </div>
-                    </div>
-
-                    <div>
-                        <h3 class="text-lg 2xl:text-xl font-semibold text-gray-500 mb-2">Detailed Review</h3>
-                        <p class="text-2xl 2xl:text-lg font-semibold text-gray-700 leading-relaxed w-full bg-gray-50 p-6 rounded-2xl border border-gray-200/60 shadow-inner">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="border border-[#10B981] text-[#10B981] text-xs font-semibold px-4 py-1.5 rounded-full">
+                                Frontend Developer
+                            </span>
+                            <div class="bg-[#EEF2FF] px-3.5 py-1.5 rounded-full flex items-center gap-2">
+                                <div class="flex gap-1 text-[#10B981]">
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                </div>
+                                <span class="text-xs font-bold text-gray-900">5.0</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-900 font-eng font-semibold text-sm">
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nec est urna. Nunc vehicula elit vel est vehicula scelerisque. Suspendisse non elementum ante. Sed libero leo, blandit at diam a, gravida aliquam tellus. Cras quis ornare odio, eget consectetur quam. Aenean tristique sed ex non porta. Nam molestie at quam non luctus. Etiam laoreet, turpis at semper finibus, enim erat semper nisl, sed efficitur diam nisl ut ligula. Proin tincidunt fermentum mauris, non cursus odio convallis ut. Nulla sodales ante eu suscipit mattis. Sed euismod tristique neque vel ornare.
                         </p>
                     </div>
 
-                    <!-- Action Buttons -->
-                    <div class="flex flex-row-reverse items-center gap-4 pt-4">
-                        <a href="./profile.html" class="font-thai text-sm 2xl:text-base font-semibold text-white bg-[#10B981] hover:bg-emerald-600 rounded-full px-8 py-3 tracking-wider transition-colors inline-block shadow-sm">
-                            บันทึก
-                        </a>
-                        <a href="./profile.html" class="font-thai text-sm 2xl:text-base font-semibold text-gray-600 hover:text-red-500 rounded-full px-6 py-3 tracking-wider transition-colors inline-block">
-                            ยกเลิก
-                        </a>
+                    <!-- Card 2 -->
+                    <div class="bg-white rounded-4xl w-full min-h-[259px] sm:p-8 border border-gray-100 shadow-sm pointer-events-none">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 shrink-0">
+                                    <i class="fa-regular fa-user text-lg"></i>
+                                </div>
+                                <h4 class="font-medium tracking-wider text-2xl text-gray-900 font-thai">นายแฮมมี่ มหัศจรรย์</h4>
+                            </div>
+                            <div class="space-x-2">
+                                <span class="inline-block text-[#10B981] font-semibold text-xs 2xl:text-sm">เขียนรีวิว</span>
+                                <span class="text-sm font-semibold text-gray-400">31 / 08 /2026</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="border border-[#10B981] text-[#10B981] text-xs font-semibold px-4 py-1.5 rounded-full">
+                                Frontend Developer
+                            </span>
+                            <div class="bg-[#EEF2FF] px-3.5 py-1.5 rounded-full flex items-center gap-2">
+                                <div class="flex gap-1 text-[#10B981]">
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                </div>
+                                <span class="text-xs font-bold text-gray-900">5.0</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-900 font-eng font-semibold text-sm">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nec est urna. Nunc vehicula elit vel est vehicula scelerisque. Suspendisse non elementum ante. Sed libero leo, blandit at diam a, gravida aliquam tellus. Cras quis ornare odio, eget consectetur quam. Aenean tristique sed ex non porta. Nam molestie at quam non luctus. Etiam laoreet, turpis at semper finibus, enim erat semper nisl, sed efficitur diam nisl ut ligula. Proin tincidunt fermentum mauris, non cursus odio convallis ut. Nulla sodales ante eu suscipit mattis. Sed euismod tristique neque vel ornare.
+                        </p>
                     </div>
-                </div>
-            </section>
+
+                    <!-- Card 3 -->
+                    <div class="bg-white rounded-4xl w-full min-h-[259px] sm:p-8 border border-gray-100 shadow-sm pointer-events-none">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 shrink-0">
+                                    <i class="fa-regular fa-user text-lg"></i>
+                                </div>
+                                <h4 class="font-medium tracking-wider text-2xl text-gray-900 font-thai">นายแฮมมี่ มหัศจรรย์</h4>
+                            </div>
+                            <div class="space-x-2">
+                                <span class="inline-block text-[#10B981] font-semibold text-xs 2xl:text-sm">เขียนรีวิว</span>
+                                <span class="text-sm font-semibold text-gray-400">31 / 08 /2026</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="border border-[#10B981] text-[#10B981] text-xs font-semibold px-4 py-1.5 rounded-full">
+                                Frontend Developer
+                            </span>
+                            <div class="bg-[#EEF2FF] px-3.5 py-1.5 rounded-full flex items-center gap-2">
+                                <div class="flex gap-1 text-[#10B981]">
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                </div>
+                                <span class="text-xs font-bold text-gray-900">5.0</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-900 font-eng font-semibold text-sm">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nec est urna. Nunc vehicula elit vel est vehicula scelerisque. Suspendisse non elementum ante. Sed libero leo, blandit at diam a, gravida aliquam tellus. Cras quis ornare odio, eget consectetur quam. Aenean tristique sed ex non porta. Nam molestie at quam non luctus. Etiam laoreet, turpis at semper finibus, enim erat semper nisl, sed efficitur diam nisl ut ligula. Proin tincidunt fermentum mauris, non cursus odio convallis ut. Nulla sodales ante eu suscipit mattis. Sed euismod tristique neque vel ornare.
+                        </p>
+                    </div>
+                    
+                    <!-- Card 4 -->
+                    <div class="bg-white rounded-4xl w-full min-h-[259px] sm:p-8 border border-gray-100 shadow-sm pointer-events-none">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 shrink-0">
+                                    <i class="fa-regular fa-user text-lg"></i>
+                                </div>
+                                <h4 class="font-medium tracking-wider text-2xl text-gray-900 font-thai">นายแฮมมี่ มหัศจรรย์</h4>
+                            </div>
+                            <div class="space-x-2">
+                                <span class="inline-block text-[#10B981] font-semibold text-xs 2xl:text-sm">เขียนรีวิว</span>
+                                <span class="text-sm font-semibold text-gray-400">31 / 08 /2026</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="border border-[#10B981] text-[#10B981] text-xs font-semibold px-4 py-1.5 rounded-full">
+                                Frontend Developer
+                            </span>
+                            <div class="bg-[#EEF2FF] px-3.5 py-1.5 rounded-full flex items-center gap-2">
+                                <div class="flex gap-1 text-[#10B981]">
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                    <i class="fa-solid fa-star text-xs"></i>
+                                </div>
+                                <span class="text-xs font-bold text-gray-900">5.0</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-900 font-eng font-semibold text-sm">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nec est urna. Nunc vehicula elit vel est vehicula scelerisque. Suspendisse non elementum ante. Sed libero leo, blandit at diam a, gravida aliquam tellus. Cras quis ornare odio, eget consectetur quam. Aenean tristique sed ex non porta. Nam molestie at quam non luctus. Etiam laoreet, turpis at semper finibus, enim erat semper nisl, sed efficitur diam nisl ut ligula. Proin tincidunt fermentum mauris, non cursus odio convallis ut. Nulla sodales ante eu suscipit mattis. Sed euismod tristique neque vel ornare.
+                        </p>
+                    </div>
+
+                </aside>
+            </div>
         </section>
     </main>
 </body>
