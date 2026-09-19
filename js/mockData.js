@@ -22,6 +22,39 @@ export const mockCurrentUser = {
         }
     ]
 };
+// ข้อมูลจำลองสำหรับ รีวิวบริษัทต่างๆ (Mock Reviews)
+export const mockReviews = [
+    {
+        id: "mock-rev-1",
+        companyId: "2", // ID: 2 คือ บริษัท เก็ตออน เทคโนโลยี
+        companyName: "บริษัท เก็ตออน เทคโนโลยี จำกัด",
+        position: "Frontend Developer",
+        rating: 5,
+        detail: "พี่ๆ ในทีมดูแลดีมาก ได้ลงมือเขียนโค้ดจริงๆ ระบบงานเป็นแบบ Agile มีการทำ Daily Scrum ทุกเช้า",
+        date: "09 / 09 / 2026",
+        authorName: "ภรณ์ทินรดา จันทร์เพ็ญ"
+    },
+    {
+        id: "mock-rev-2",
+        companyId: "2",
+        companyName: "บริษัท เก็ตออน เทคโนโลยี จำกัด",
+        position: "Business Analyst",
+        rating: 4,
+        detail: "ได้เรียนรู้การเก็บ Requirement และทำ Document อย่างเป็นระบบ สังคมเพื่อนร่วมงานดีมากครับ แต่อาจจะมีความกดดันช่วงส่งมอบงานนิดหน่อย",
+        date: "15 / 08 / 2026",
+        authorName: "รุ่นพี่ SE 65"
+    },
+    {
+        id: "mock-rev-3",
+        companyId: "5", // ID: 5 คือ บริษัท บานาน่า โคดดิ้ง
+        companyName: "บริษัท บานาน่า โคดดิ้ง จำกัด",
+        position: "Developer",
+        rating: 5,
+        detail: "มีการทำ Code Review ทุกอาทิตย์ ทำให้สกิลเขียนโปรแกรมพัฒนาขึ้นเยอะมาก พี่เลี้ยงใจดี ขนมในออฟฟิศเยอะด้วย!",
+        date: "20 / 07 / 2026",
+        authorName: "รุ่นพี่ SE 66"
+    }
+];
 export const rawMockCompanies = [
     {
         id: "1",
