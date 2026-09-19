@@ -2,10 +2,10 @@
 export const mockCurrentUser = {
     id: "STD-001",
     studentId: "68023403",
-    name: "ภรณ์ทินรดา จันทร์เพ็ญ",
+    name: "นายแฮมมี่ มหัศจรรย์",
     linkedIn_Profile: "linkedin.com/in/alexmercer", // ไม่ใช่ข้อมูลจริง
     facebook: "facebook.com/alex.m", // ไม่ใช่ข้อมูลจริง
-    email_uni: "680234030@up.ac.th", // ใช้เข้าระบบ
+    email_uni: "68023403@up.ac.th", // ใช้เข้าระบบ
     email_personal: "pp@gmail.com", // ไม่ใช่ข้อมูลจริง
     password: "123456",
     avatarUrl: "./img/profile.jpg",
@@ -14,11 +14,13 @@ export const mockCurrentUser = {
             id: "rev-1",
             companyId: "COMP-001",
             companyName: "บริษัท เก็ตออน เทคโนโลยี จำกัด",
-            rating: 4.8,
-            content: "พี่ๆ ในทีมดูแลดีมาก ได้ลงมือเขียนโค้ดจริงๆ ระบบงานเป็นแบบ Agile",
-            date: "2026-09-09"
+            position: "Frontend Developer",
+            rating: 4,
+            detail: "พี่ๆ ในทีมดูแลดีมาก ได้ลงมือเขียนโค้ดจริงๆ ระบบงานเป็นแบบ Agile",
+            date: "2026-09-09",
+            authorName: "นายแฮมมี่ มหัศจรรย์"
         }
-    ] // ตอนนี้มี 1 รีวิว
+    ]
 };
 export const rawMockCompanies = [
     {

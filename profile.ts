@@ -1,10 +1,49 @@
 import type { Review } from './models.js';
+import { mockCurrentUser } from './mockData.js'; // นำเข้าข้อมูลจำลองของ User
 
 document.addEventListener('DOMContentLoaded', (): void => {
+    
+    // ==========================================
+    // 1. ระบบดักจับ (Page Guard)
+    // ==========================================
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+        window.location.href = './login.html'; 
+        return; 
+    }
+
+    // ==========================================
+    // 2. แสดงข้อมูล Profile ฝั่งซ้าย จาก mockData
+    // ==========================================
+    const currentUser = mockCurrentUser;
+        
+    const profileImg = document.getElementById('profile-img') as HTMLImageElement;
+    const profileName = document.getElementById('profile-name');
+    const contactEmail = document.getElementById('contact-email');
+    const contactLinkedin = document.getElementById('contact-linkedin') as HTMLAnchorElement;
+    const contactFacebook = document.getElementById('contact-facebook') as HTMLAnchorElement;
+
+    // หยอดข้อมูลลงใน HTML
+    if (profileImg && currentUser.avatarUrl) profileImg.src = currentUser.avatarUrl;
+    if (profileName) profileName.textContent = currentUser.name;
+    if (contactEmail) contactEmail.textContent = currentUser.email_uni;
+    
+    if (contactLinkedin) {
+        contactLinkedin.textContent = currentUser.linkedIn_Profile;
+        contactLinkedin.href = `https://${currentUser.linkedIn_Profile}`;
+    }
+    
+    if (contactFacebook) {
+        contactFacebook.textContent = currentUser.facebook;
+        contactFacebook.href = `https://${currentUser.facebook}`;
+    }
+
+    // ==========================================
+    // 3. ฟังก์ชัน Render แสดงผลรีวิว (ฝั่งขวา)
+    // ==========================================
     const profileReviewContainer = document.getElementById('profileReviewContainer');
     if (!profileReviewContainer) return;
 
-    // 1. ฟังก์ชัน Render แสดงผลรีวิว
     const renderProfileReviews = (): void => {
         const rawData = localStorage.getItem('user_reviews');
         let storedReviews: Review[] = [];
@@ -12,18 +51,13 @@ document.addEventListener('DOMContentLoaded', (): void => {
         if (rawData) {
             try {
                 const parsed = JSON.parse(rawData);
-                if (Array.isArray(parsed)) {
-                    storedReviews = parsed;
-                } else if (typeof parsed === 'object' && parsed !== null) {
-                    storedReviews = [parsed];
-                }
+                storedReviews = Array.isArray(parsed) ? parsed : [parsed];
             } catch (e) {
-                console.error('Error parsing user_reviews:', e);
                 storedReviews = [];
             }
         }
 
-        // กรณีไม่มีข้อมูลใน LocalStorage เลย แสดงข้อความแจ้งเตือน
+        // กรณีไม่มีข้อมูลรีวิวในระบบ
         if (storedReviews.length === 0) {
             profileReviewContainer.innerHTML = `
                 <div class="flex items-center justify-center h-40 bg-white rounded-2xl border border-gray-100 text-gray-400 font-thai text-base shadow-sm">
@@ -35,7 +69,7 @@ document.addEventListener('DOMContentLoaded', (): void => {
 
         profileReviewContainer.innerHTML = '';
 
-        // วนลูปสร้างการ์ด
+        // วนลูปสร้างการ์ดรีวิวทีละใบ
         storedReviews.forEach((review: Review) => {
             let starsHTML = '';
             const ratingNum = Number(review.rating) || 5;
@@ -48,18 +82,12 @@ document.addEventListener('DOMContentLoaded', (): void => {
                 }
             }
 
-            // เช็ค Key ข้อความรีวิวทุกรูปแบบ
-            const reviewDetail = 
-                review.detail || 
-                (review as any).content || 
-                (review as any).reviewText || 
-                (review as any).description || 
-                (review as any).comment || 
-                'ไม่มีรายละเอียดข้อความรีวิว';
-
+            const reviewDetail = review.detail || (review as any).content || 'ไม่มีรายละเอียดข้อความรีวิว';
             const reviewId = review.id || '1';
             const reviewDate = review.date || '31 / 08 / 2026';
-            const authorName = review.authorName || review.author || 'นายแฮมมี่ มหัศจรรย์';
+            
+            // ดึงชื่อผู้เขียนรีวิวมาจาก mockCurrentUser เป็นหลัก
+            const authorName = currentUser.name || review.authorName || 'ไม่ระบุชื่อ';
             const positionName = review.position || 'Frontend Developer';
 
             const reviewCard = `
@@ -103,64 +131,62 @@ document.addEventListener('DOMContentLoaded', (): void => {
             profileReviewContainer.insertAdjacentHTML('beforeend', reviewCard);
         });
 
+        // จัดการ Event ปุ่มต่างๆ หลังสร้างการ์ดเสร็จ
         attachCardEvents();
     };
 
-    // 2. ฟังก์ชันจัดการ Event ทั้งหมดของการ์ด (คลิกเปิด viewreview + ปุ่มลบ)
+    // ==========================================
+    // 4. ฟังก์ชันจัดการ Event ของการ์ด (คลิก, ลบ)
+    // ==========================================
     const attachCardEvents = (): void => {
         const cards = profileReviewContainer.querySelectorAll<HTMLElement>('.review-card');
 
         cards.forEach((card) => {
-            // Event เมื่อคลิกที่การ์ดเพื่อไปยังหน้า viewreview.html
             card.addEventListener('click', (event: MouseEvent) => {
                 const target = event.target as HTMLElement;
-
-                // ป้องกันไม่ให้เปลี่ยนหน้าเมื่อกดปุ่มลบ หรือ ปุ่มแก้ไข
-                if (target.closest('.btn-delete') || target.closest('.btn-edit')) {
-                    return;
-                }
+                // ป้องกันไม่ให้ไปหน้า viewreview ถ้ายิงโดนปุ่มลบ หรือปุ่มแก้ไข
+                if (target.closest('.btn-delete') || target.closest('.btn-edit')) return;
 
                 const cardId = card.getAttribute('data-id');
-                if (cardId) {
-                    window.location.href = `./viewreview.html?id=${cardId}`;
-                }
+                if (cardId) window.location.href = `./viewreview.html?id=${cardId}`;
             });
 
-            // Event สำหรับปุ่มลบ
+            // กดปุ่มถังขยะเพื่อลบ
             const deleteBtn = card.querySelector<HTMLButtonElement>('.btn-delete');
             if (deleteBtn) {
                 deleteBtn.addEventListener('click', (event: MouseEvent) => {
-                    event.stopPropagation(); // ป้องกันไม่ให้ลามไปเปิดหน้า viewreview
+                    event.stopPropagation();
                     const cardId = card.getAttribute('data-id');
-
-                    if (confirm('คุณต้องการลบรีวิวนี้ใช่หรือไม่?')) {
-                        deleteReview(cardId, card);
-                    }
+                    if (confirm('คุณต้องการลบรีวิวนี้ใช่หรือไม่?')) deleteReview(cardId, card);
                 });
             }
         });
     };
 
-    // 3. ฟังก์ชันลบข้อมูล
+    // ==========================================
+    // 5. ฟังก์ชันลบข้อมูลรีวิว
+    // ==========================================
     const deleteReview = (id: string | null, cardElement: HTMLElement): void => {
         if (!id) return;
 
+        // ใส่ Class deleting เพื่อเล่นแอนิเมชันตอนลบ
         cardElement.classList.add('deleting');
 
         const rawData = localStorage.getItem('user_reviews');
         let storedReviews: Review[] = rawData ? JSON.parse(rawData) : [];
         if (!Array.isArray(storedReviews)) storedReviews = [storedReviews];
 
+        // กรองเอาตัวที่ถูกลบออก
         storedReviews = storedReviews.filter((item) => String(item.id) !== String(id));
         localStorage.setItem('user_reviews', JSON.stringify(storedReviews));
 
+        // รอแอนิเมชันทำงานเสร็จ 300ms ค่อยลบออกจากจอจริง
         setTimeout(() => {
             cardElement.remove();
-            if (storedReviews.length === 0) {
-                renderProfileReviews();
-            }
+            if (storedReviews.length === 0) renderProfileReviews(); // ถ้าลบจนหมดให้ขึ้นข้อความ
         }, 300);
     };
 
+    // เริ่มการทำงานทั้งหมดเมื่อโหลดหน้า
     renderProfileReviews();
 });

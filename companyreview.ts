@@ -50,4 +50,16 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         reviewListContainer.insertAdjacentHTML('afterbegin', cardHTML);
     });
+
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const btnWriteReview = document.getElementById('btn-write-review') as HTMLAnchorElement;
+
+    if (btnWriteReview) {
+        btnWriteReview.addEventListener('click', (e) => {
+            if (!isLoggedIn) {
+                e.preventDefault(); 
+                window.location.href = './login.html'; 
+            }
+        });
+    }
 });
