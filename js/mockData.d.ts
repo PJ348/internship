@@ -12,9 +12,11 @@ export declare const mockCurrentUser: {
         id: string;
         companyId: string;
         companyName: string;
+        position: string;
         rating: number;
-        content: string;
+        detail: string;
         date: string;
+        authorName: string;
     }[];
 };
 export declare const rawMockCompanies: {

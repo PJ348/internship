@@ -52,21 +52,15 @@ export interface StudentProfile {
 }
 export interface Review {
     id: string;
-    companyId: string;
+    companyId?: string;
     companyName: string;
-    rating: number;
-    content: string;
-    date: string;
-}
-export interface Review {
-    id: string;
-    companyName: string;
-    position: string;
+    position?: string;
     rating: number;
     detail: string;
+    content?: string;
     date: string;
-    authorName: string;
-    isNew?: boolean;
+    authorName?: string;
     author?: string;
+    isNew?: boolean;
 }
 //# sourceMappingURL=models.d.ts.map
