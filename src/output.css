@@ -420,6 +420,30 @@
   .mr-14 {
     margin-right: calc(var(--spacing) * 14);
   }
+  .mr-16 {
+    margin-right: calc(var(--spacing) * 16);
+  }
+  .mr-17 {
+    margin-right: calc(var(--spacing) * 17);
+  }
+  .mr-17\.5 {
+    margin-right: calc(var(--spacing) * 17.5);
+  }
+  .mr-20 {
+    margin-right: calc(var(--spacing) * 20);
+  }
+  .mr-21 {
+    margin-right: calc(var(--spacing) * 21);
+  }
+  .mr-21\.5 {
+    margin-right: calc(var(--spacing) * 21.5);
+  }
+  .mr-21\.25 {
+    margin-right: calc(var(--spacing) * 21.25);
+  }
+  .mr-22 {
+    margin-right: calc(var(--spacing) * 22);
+  }
   .mb-1 {
     margin-bottom: var(--spacing);
   }

@@ -76,39 +76,16 @@ export interface StudentProfile {
   reviews: Review[];
 }
 
-// โครงสร้างของข้อมูลรีวิว 1 รายการ
-// export interface Review {
-//   id: string;
-//   companyId: string;
-//   companyName: string;
-//   rating: number;
-//   content: string;
-//   date: string;
-// }
-
-// // myreview
-// export interface Review {
-//     id: string;
-//     companyName: string;
-//     position: string;
-//     rating: number;       // เลขจำนวนเต็ม 1-5 (ไม่มีทศนิยม)
-//     detail: string;
-//     date: string;         // รูปแบบ "DD / MM / YYYY"
-//     authorName: string;   // ชื่อผู้รีวิว
-//     isNew?: boolean;
-//     author?: string;
-// }
-
 // โครงสร้างของข้อมูลรีวิวแบบรวม (Unified Review Interface)
 export interface Review {
   id: string;
   companyId?: string;      // ID ของบริษัท
-  companyName: string;     // ชื่อบริษัท
-  position?: string;       // ตำแหน่งที่ฝึกงาน (เช่น Frontend Developer)
-  rating: number;          // คะแนน 1-5
-  detail: string;          // รายละเอียดรีวิว (ใช้ตัวนี้เป็นหลัก)
-  content?: string;        // เก็บเผื่อไว้รองรับโค้ดเวอร์ชันเก่า
-  date: string;            // วันที่รีวิว
+  companyName: string;    
+  position?: string;       // ตำแหน่งที่ฝึกงาน
+  rating: number;          
+  detail: string;          
+  content?: string;       
+  date: string;            
   authorName?: string;     // ชื่อผู้รีวิว
   author?: string;
   isNew?: boolean;         // ป้ายกำกับรีวิวใหม่

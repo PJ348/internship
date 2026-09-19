@@ -1,10 +1,11 @@
-import { rawMockCompanies } from './mockData.js';
+import { rawMockCompanies, mockReviews } from './mockData.js';
 import { CompanyManager } from './models.js';
 document.addEventListener('DOMContentLoaded', () => {
+    const existingReviews = localStorage.getItem('user_reviews');
+    if (!existingReviews || existingReviews === '[]') {
+        localStorage.setItem('user_reviews', JSON.stringify(mockReviews));
+    }
     const manager = new CompanyManager();
-    // ดึงข้อมูลมา 10 บริษัท
-    // const expandedData = [...rawMockCompanies, ...rawMockCompanies, ...rawMockCompanies];
-    // manager.loadMockData(expandedData);
     manager.loadMockData(rawMockCompanies);
     const sliderContainer = document.getElementById('company-grid');
     if (sliderContainer) {
