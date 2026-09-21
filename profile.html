@@ -19,6 +19,7 @@
         .review-card {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         /* สถานะเมื่อกดลบ */
@@ -76,7 +77,7 @@
             บริษัททั้งหมด
         </a>
 
-        <section class="flex flex-col lg:flex-row w-full gap-6 items-start flex-1 min-h-0">
+        <section class="flex flex-col lg:flex-row w-full gap-6 items-start lg:items-stretch flex-1 min-h-0">
             
             <!-- ฝั่งซ้าย: Profile & Contact -->
             <!-- ฝั่งซ้าย: Profile & Contact -->
@@ -133,11 +134,9 @@
             </div>
 
             <!-- ฝั่งขวา: My Reviews -->
-            <div class="flex-1 min-w-0 flex flex-col h-full">
+            <div class="flex-1 min-w-0 min-h-0 flex flex-col h-full">
                 <h2 class="text-xl font-eng font-bold text-gray-900 mb-3 shrink-0">My Reviews</h2>
-                
-                <!-- Container สำหรับรายการการ์ด พร้อม Scrollbar นุ่มนวลถ้าเกินพื้นที่ -->
-                <div id="profileReviewContainer" class="flex flex-col gap-4 overflow-y-auto pr-1 flex-1">
+                <div id="profileReviewContainer" class="flex flex-col gap-4 overflow-y-auto pr-1 flex-1 min-h-0">
                 </div>
             </div>
         </section>

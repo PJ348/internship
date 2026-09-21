@@ -1,26 +1,29 @@
 // 1. Abstraction[cite: 1]
 export class User {
-    id; // Encapsulation
+    id;
     constructor(id) { this.id = id; }
+    getId() { return this.id; }
 }
-// 2. Inheritance & Polymorphism[cite: 1]
 export class Guest extends User {
-    constructor(id) { super(id); }
+    constructor(id = 'guest') { super(id); }
     getRoleName() { return "Guest"; }
     canWriteReview() { return false; }
+    canEditReview(_ownerId) { return false; }
 }
 export class Reviewer extends User {
     email;
     constructor(id, email) {
         super(id);
-        if (!email.endsWith("@up.ac.th"))
+        if (!email.toLowerCase().endsWith("@up.ac.th"))
             throw new Error("Invalid Email");
         this.email = email;
     }
+    getEmail() { return this.email; }
     getRoleName() { return "Reviewer"; }
     canWriteReview() { return true; }
+    canEditReview(ownerId) { return this.id === ownerId; }
 }
-// 3. Encapsulation (ซ่อนแอตทริบิวต์บริษัท)[cite: 1]
+// 3. Encapsulation
 export class Company {
     id;
     name;
@@ -28,7 +31,8 @@ export class Company {
     roles;
     internCount;
     imageUrl;
-    rating = (Math.random() * 1 + 4);
+    rating = 0;
+    reviewCount = 0;
     constructor(id, name, address, roles, internCount, imageUrl) {
         this.id = id;
         this.name = name;
@@ -37,21 +41,42 @@ export class Company {
         this.internCount = internCount;
         this.imageUrl = imageUrl;
     }
+    setStats(rating, reviewCount) {
+        this.rating = Math.min(5, Math.max(0, rating));
+        this.reviewCount = Math.max(0, Math.floor(reviewCount));
+    }
     getCompanyInfo() {
         return {
             id: this.id, name: this.name, address: this.address,
             roles: this.roles, internCount: this.internCount,
-            imageUrl: this.imageUrl, rating: this.rating
+            imageUrl: this.imageUrl, rating: this.rating,
+            reviewCount: this.reviewCount
         };
     }
 }
 export class CompanyManager {
     companies = [];
+    getAllCompanies() { return this.companies; }
     loadMockData(mockData) {
         for (const data of mockData) {
             this.companies.push(new Company(data.id, data.name, data.address, data.roles, data.count, data.imageUrl));
         }
     }
-    getAllCompanies() { return this.companies; }
+    findById(id) {
+        return this.companies
+            .find(c => c.getCompanyInfo().id === String(id))
+            ?.getCompanyInfo();
+    }
+    search(keyword) {
+        const k = keyword.trim().toLowerCase();
+        if (!k)
+            return this.companies;
+        return this.companies.filter(c => {
+            const i = c.getCompanyInfo();
+            return i.name.toLowerCase().includes(k)
+                || i.address.toLowerCase().includes(k)
+                || i.roles.some(r => r.toLowerCase().includes(k));
+        });
+    }
 }
 //# sourceMappingURL=models.js.map

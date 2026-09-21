@@ -1,22 +1,18 @@
 import type { Review } from './models.js';
 import { mockCurrentUser } from './mockData.js'; // นำเข้าข้อมูลจำลองของ User
+import { getCurrentUser } from './reviewService.js';
 
 document.addEventListener('DOMContentLoaded', (): void => {
-    
-    // ==========================================
-    // 1. ระบบดักจับ (Page Guard)
-    // ==========================================
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    if (!isLoggedIn) {
-        window.location.href = './login.html'; 
-        return; 
+
+    // ระบบดักจับ (Page Guard)
+    if (!getCurrentUser().canWriteReview()) {
+        window.location.href = './login.html';
+        return;
     }
 
-    // ==========================================
-    // 2. แสดงข้อมูล Profile ฝั่งซ้าย จาก mockData
-    // ==========================================
+    // แสดงข้อมูล Profile ฝั่งซ้าย จาก mockData
     const currentUser = mockCurrentUser;
-        
+
     const profileImg = document.getElementById('profile-img') as HTMLImageElement;
     const profileName = document.getElementById('profile-name');
     const contactEmail = document.getElementById('contact-email');
@@ -27,24 +23,23 @@ document.addEventListener('DOMContentLoaded', (): void => {
     if (profileImg && currentUser.avatarUrl) profileImg.src = currentUser.avatarUrl;
     if (profileName) profileName.textContent = currentUser.name;
     if (contactEmail) contactEmail.textContent = currentUser.email_uni;
-    
+
     if (contactLinkedin) {
         contactLinkedin.textContent = currentUser.linkedIn_Profile;
         contactLinkedin.href = `https://${currentUser.linkedIn_Profile}`;
     }
-    
+
     if (contactFacebook) {
         contactFacebook.textContent = currentUser.facebook;
         contactFacebook.href = `https://${currentUser.facebook}`;
     }
 
-    // ==========================================
-    // 3. ฟังก์ชัน Render แสดงผลรีวิว (ฝั่งขวา)
-    // ==========================================
+    // ฟังก์ชัน Render แสดงผลรีวิว (ฝั่งขวา)
     const profileReviewContainer = document.getElementById('profileReviewContainer');
     if (!profileReviewContainer) return;
 
     const renderProfileReviews = (): void => {
+        const user = getCurrentUser();
         const rawData = localStorage.getItem('user_reviews');
         let storedReviews: Review[] = [];
 
@@ -56,6 +51,7 @@ document.addEventListener('DOMContentLoaded', (): void => {
                 storedReviews = [];
             }
         }
+        storedReviews = storedReviews.filter(r => r.userId === user.getId());
 
         // กรณีไม่มีข้อมูลรีวิวในระบบ
         if (storedReviews.length === 0) {
@@ -85,9 +81,9 @@ document.addEventListener('DOMContentLoaded', (): void => {
             const reviewDetail = review.detail || (review as any).content || 'ไม่มีรายละเอียดข้อความรีวิว';
             const reviewId = review.id || '1';
             const reviewDate = review.date || '31 / 08 / 2026';
-            
+
             // ดึงชื่อผู้เขียนรีวิวมาจาก mockCurrentUser เป็นหลัก
-            const authorName = currentUser.name || review.authorName || 'ไม่ระบุชื่อ';
+            const authorName = review.authorName || currentUser.name || 'ไม่ระบุชื่อ';
             const positionName = review.position || 'Frontend Developer';
 
             const reviewCard = `
@@ -135,9 +131,7 @@ document.addEventListener('DOMContentLoaded', (): void => {
         attachCardEvents();
     };
 
-    // ==========================================
-    // 4. ฟังก์ชันจัดการ Event ของการ์ด (คลิก, ลบ)
-    // ==========================================
+    // ฟังก์ชันจัดการ Event ของการ์ด (คลิก, ลบ)
     const attachCardEvents = (): void => {
         const cards = profileReviewContainer.querySelectorAll<HTMLElement>('.review-card');
 
@@ -163,9 +157,7 @@ document.addEventListener('DOMContentLoaded', (): void => {
         });
     };
 
-    // ==========================================
-    // 5. ฟังก์ชันลบข้อมูลรีวิว
-    // ==========================================
+    // ฟังก์ชันลบข้อมูลรีวิว
     const deleteReview = (id: string | null, cardElement: HTMLElement): void => {
         if (!id) return;
 
@@ -176,14 +168,17 @@ document.addEventListener('DOMContentLoaded', (): void => {
         let storedReviews: Review[] = rawData ? JSON.parse(rawData) : [];
         if (!Array.isArray(storedReviews)) storedReviews = [storedReviews];
 
-        // กรองเอาตัวที่ถูกลบออก
-        storedReviews = storedReviews.filter((item) => String(item.id) !== String(id));
+        // กรองเอาตัวที่ถูกลบออก 
+        storedReviews = storedReviews.filter(item => String(item.id) !== String(id));
         localStorage.setItem('user_reviews', JSON.stringify(storedReviews));
 
         // รอแอนิเมชันทำงานเสร็จ 300ms ค่อยลบออกจากจอจริง
         setTimeout(() => {
             cardElement.remove();
-            if (storedReviews.length === 0) renderProfileReviews(); // ถ้าลบจนหมดให้ขึ้นข้อความ
+            // เดิมเช็ค storedReviews.length (รีวิวทั้งระบบ) → ต้องเช็คการ์ดที่เหลือบนจอ
+            if (profileReviewContainer.querySelectorAll('.review-card').length === 0) {
+                renderProfileReviews();
+            }
         }, 300);
     };
 

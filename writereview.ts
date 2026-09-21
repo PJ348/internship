@@ -1,6 +1,24 @@
-import type { Review } from './models';
+import type { Review } from './models.js';
+import { createCompanyManager, getCurrentUser } from './reviewService.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    const user = getCurrentUser();
+    if (!user.canWriteReview()) {
+        window.location.href = './login.html';
+        return;
+    }
+
+    const companyId = new URLSearchParams(window.location.search).get('id');
+    const company = createCompanyManager().findById(companyId ?? '');
+    if (!company) {
+        window.location.href = './allCompany.html';
+        return;
+    }
+
+    const backUrl = `./companyreview.html?id=${company.id}`;
+    (document.getElementById('btn-back') as HTMLAnchorElement | null)?.setAttribute('href', backUrl);
+    (document.getElementById('btn-cancel') as HTMLAnchorElement | null)?.setAttribute('href', backUrl);
+
     let currentRating: number = 0; // คะแนนจริงที่เลือกไว้ (0-5)
 
     // 1. ดึง Element จาก DOM
@@ -16,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ดึงดาวทั้งหมดใน Container
     const stars = starContainer.querySelectorAll<HTMLElement>('i, .star-btn, .star-icon');
 
-    // 2. แสดงวันที่ปัจจุบัน (รูปแบบ DD / MM / YYYY)
+    // แสดงวันที่ปัจจุบัน (รูปแบบ DD / MM / YYYY)
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
     const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -27,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         displayDate.textContent = dateStr;
     }
 
-    // 3. ฟังก์ชัน อัปเดตสีดาวและตัวเลขคะแนน
+    // ฟังก์ชัน อัปเดตสีดาวและตัวเลขคะแนน
     const renderStars = (rating: number) => {
         if (ratingValueText) {
             ratingValueText.textContent = rating.toString();
@@ -45,12 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // 4. ระบบเลือกดาว Interactive (Hover & Click)
+    // ระบบเลือกดาว Interactive (Hover & Click)
     stars.forEach((star, idx) => {
         const val = parseInt(star.getAttribute('data-value') || String(idx + 1), 10);
 
         star.addEventListener('mouseenter', () => renderStars(val));
-        
+
         star.addEventListener('click', () => {
             currentRating = (currentRating === val) ? 0 : val;
             renderStars(currentRating);
@@ -59,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     starContainer.addEventListener('mouseleave', () => renderStars(currentRating));
 
-    // 5. บันทึกข้อมูลเมื่อกด Submit ฟอร์ม
+    // บันทึกข้อมูลเมื่อกด Submit ฟอร์ม
     reviewForm.addEventListener('submit', (e: Event) => {
         e.preventDefault();
 
@@ -71,17 +89,19 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+
         // สร้าง Object ข้อมูลใหม่ตรงตาม Review Interface
         const newReview: Review = {
             id: Date.now().toString(),
-            companyId: 'get-on-technology',
-            companyName: 'บริษัท เก็ตออน เทคโนโลยี จำกัด',
-            position: position,
+            userId: user.getId(),
+            companyId: String(company.id),
+            companyName: company.name,
+            position,
             rating: currentRating,
-            detail: detail,
+            detail,
             content: detail,
             date: dateStr,
-            authorName: 'นายแฮมมี่ มหัศจรรย์',
+            authorName: (JSON.parse(localStorage.getItem('userData') || '{}').name) || 'ไม่ระบุชื่อ',
             isNew: true
         };
 
@@ -103,6 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('user_reviews', JSON.stringify(existingReviews));
 
         // เด้งไปหน้าแสดงผลรีวิว
-        window.location.href = './companyreview.html';
+        window.location.href = backUrl;
     });
 });

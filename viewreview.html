@@ -19,7 +19,7 @@
 <body class="font-thai bg-[#F3F5F7] min-h-screen flex flex-col">
 
     <!-- Navigation -->
-    nav class="flex items-center justify-between px-6 py-3 bg-white border-b border-gray-100 sticky top-0 z-50 pr-9.75">
+    <nav class="flex items-center justify-between px-6 py-3 bg-white border-b border-gray-100 sticky top-0 z-50 pr-9.75">
         <!-- โลโก้ (กดกลับหน้าหลัก) -->
         <a href="./index.html">
             <img src="./img/logo.png" alt="Logo" class="w-32">
@@ -63,24 +63,24 @@
             <!-- ฝั่งซ้าย (Sidebar บริษัท) - ปรับขนาดเป็น lg:w-80 -->
             <aside class="w-full lg:w-80 shrink-0 space-y-4 font-thai">
                 <div class="flex flex-col bg-white w-full rounded-3xl shadow-sm overflow-hidden border border-gray-100">
-                    <img src="./img/บริษัท เก็ตออน เทคโนโลยี จำกัด.jpeg" alt="companyimage" class="w-full h-44 object-cover rounded-t-2xl"/>
+                    <img id="company-img" src="./img/บริษัท เก็ตออน เทคโนโลยี จำกัด.jpeg" alt="companyimage" class="w-full h-44 object-cover rounded-t-2xl"/>
                     <div class="p-4">
-                        <h3 class="text-lg font-medium text-gray-900 leading-snug">บริษัท เก็ตออน เทคโนโลยี จำกัด</h3>
+                        <h3 id="company-name" class="text-lg font-medium text-gray-900 leading-snug">บริษัท เก็ตออน เทคโนโลยี จำกัด</h3>
                         <span class="inline-block bg-[#10B981] text-white rounded-full px-4 py-1 font-medium text-xs mt-2 self-start">ฝึกงาน</span>
                     </div>
                 </div>
 
                 <div class="flex flex-col bg-white w-full rounded-3xl p-5 shadow-sm border border-gray-100 items-center space-y-2 text-center font-eng">
                     <h4 class="font-medium text-sm text-gray-500">Overall Rating</h4>
-                    <h1 class="font-extrabold text-4xl text-gray-900">5</h1>
-                    <div class="flex gap-1 text-[#10B981] text-xl">
+                    <h1 id="company-rating" class="font-extrabold text-4xl text-gray-900">5</h1>
+                    <div id="company-stars" class="flex gap-1 text-[#10B981] text-xl">
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
                         <i class="fa-solid fa-star"></i>
                     </div>
-                    <p class="text-xs text-gray-400">Based on 128 Reviews</p>
+                    <p id="company-review-count" class="text-xs text-gray-400">Based on 128 Reviews</p>
                 </div>
             </aside>
 
@@ -90,7 +90,7 @@
 
                 <section class="flex-1 w-full bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm">
                     <div class="flex justify-start items-center mb-6">
-                        <span class="text-xs font-semibold text-gray-400">31 / 08 / 2026</span>
+                        <span id="view-date" class="text-xs font-semibold text-gray-400">31 / 08 / 2026</span>
                     </div>
                     <div class="space-y-5 font-eng">
                     <!-- ตำแหน่งงาน -->
@@ -121,9 +121,11 @@
                     </div>
                 </div>
                 </section>
+            </div>
         </section>
     </main>
 
+    <script type="module" src="./js/main.js"></script>
     <script type="module" src="./js/viewreview.js"></script>
 </body>
 </html>

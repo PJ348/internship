@@ -1,8 +1,9 @@
+import { getCurrentUser, fillCompanySidebar } from './reviewService.js';
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. ดึง ID จาก URL (?id=...)
+    // ดึง ID จาก URL (?id=...)
     const urlParams = new URLSearchParams(window.location.search);
     const reviewId = urlParams.get('id');
-    // 2. ดึง Element จาก DOM
+    // ดึง Element จาก DOM
     const editForm = document.getElementById('edit-review-form');
     const positionInput = document.getElementById('input-position');
     const reviewInput = document.getElementById('input-review');
@@ -11,12 +12,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!editForm || !positionInput || !reviewInput || !starContainer || !ratingDisplay)
         return;
     const stars = starContainer.querySelectorAll('.star-btn');
-    // 3. ดึงรายการรีวิวทั้งหมดจาก localStorage
+    // ดึงรายการรีวิวทั้งหมดจาก localStorage
     const rawReviews = localStorage.getItem('user_reviews');
     let reviews = rawReviews ? JSON.parse(rawReviews) : [];
-    // 4. ค้นหารีวิวที่ต้องการแก้ไข
+    // ค้นหารีวิวที่ต้องการแก้ไข
     const targetIndex = reviews.findIndex((r) => String(r.id) === String(reviewId));
     const currentReview = targetIndex !== -1 ? reviews[targetIndex] : null;
+    const user = getCurrentUser();
+    if (!currentReview || !user.canEditReview(currentReview.userId ?? '')) {
+        window.location.href = './profile.html';
+        return;
+    }
+    fillCompanySidebar(String(currentReview.companyId));
+    const dateEl = document.getElementById('review-date');
+    if (dateEl)
+        dateEl.textContent = currentReview.date;
     let currentRating = 5;
     // ฟังก์ชันอัปเดตสีดาวและตัวเลขคะแนน
     const renderStars = (rating) => {
@@ -33,14 +43,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     };
-    // 5. แสดงข้อมูลเดิมลงใน Form
+    // แสดงข้อมูลเดิมลงใน Form
     if (currentReview) {
         positionInput.value = currentReview.position || '';
         reviewInput.value = currentReview.detail || '';
         currentRating = currentReview.rating || 5;
     }
     renderStars(currentRating);
-    // 6. ระบบดาว Interactive (Hover & Click)
+    // ระบบดาว Interactive (Hover & Click)
     stars.forEach((star) => {
         const val = parseInt(star.getAttribute('data-value') || '0', 10);
         star.addEventListener('mouseenter', () => renderStars(val));
@@ -50,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     starContainer.addEventListener('mouseleave', () => renderStars(currentRating));
-    // 7. บันทึกการแก้ไข
+    // บันทึกการแก้ไข
     editForm.addEventListener('submit', (e) => {
         e.preventDefault();
         if (currentRating === 0) {
@@ -72,5 +82,4 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = './profile.html';
     });
 });
-export {};
 //# sourceMappingURL=myreview.js.map

@@ -1,4 +1,3 @@
-
 // ข้อมูลจำลองของนิสิตที่เข้าสู่ระบบ
 export const mockCurrentUser = {
   id: "STD-001",
@@ -9,53 +8,54 @@ export const mockCurrentUser = {
   email_uni: "68023403@up.ac.th", // ใช้เข้าระบบ
   email_personal: "pp@gmail.com", // ไม่ใช่ข้อมูลจริง
   password: "123456",
-  avatarUrl: "./img/profile.jpg",
-  reviews: [
-    {
-      id: "rev-1",
-      companyId: "COMP-001",
-      companyName: "บริษัท เก็ตออน เทคโนโลยี จำกัด",
-      position: "Frontend Developer", 
-      rating: 4,
-      detail: "พี่ๆ ในทีมดูแลดีมาก ได้ลงมือเขียนโค้ดจริงๆ ระบบงานเป็นแบบ Agile",
-      date: "2026-09-09",
-      authorName: "นายแฮมมี่ มหัศจรรย์" 
-    }
-  ]
+  avatarUrl: "./img/profile.jpg"
 };
 
 // ข้อมูลจำลองสำหรับ รีวิวบริษัทต่างๆ (Mock Reviews)
 export const mockReviews = [
   {
-    id: "mock-rev-1",
+    id: "rev-1",
+    userId: "STD-001", 
     companyId: "2", // ID: 2 คือ บริษัท เก็ตออน เทคโนโลยี
     companyName: "บริษัท เก็ตออน เทคโนโลยี จำกัด",
     position: "Frontend Developer",
     rating: 5,
     detail: "พี่ๆ ในทีมดูแลดีมาก ได้ลงมือเขียนโค้ดจริงๆ ระบบงานเป็นแบบ Agile มีการทำ Daily Scrum ทุกเช้า",
     date: "09 / 09 / 2026",
-    authorName: "ภรณ์ทินรดา จันทร์เพ็ญ"
+    authorName: "นายแฮมมี่ มหัศจรรย์"
   },
   {
-    id: "mock-rev-2",
-    companyId: "2", 
+    id: "mock-rev-1",
+    userId: "STD-002",
+    companyId: "2", // ID: 2 คือ บริษัท เก็ตออน เทคโนโลยี
     companyName: "บริษัท เก็ตออน เทคโนโลยี จำกัด",
     position: "Business Analyst",
     rating: 4,
     detail: "ได้เรียนรู้การเก็บ Requirement และทำ Document อย่างเป็นระบบ สังคมเพื่อนร่วมงานดีมากครับ แต่อาจจะมีความกดดันช่วงส่งมอบงานนิดหน่อย",
     date: "15 / 08 / 2026",
-    authorName: "รุ่นพี่ SE 65"
+    authorName: "นายจิตแจ่มใส ปั่นโปรเจค"
   },
   {
-    id: "mock-rev-3",
+    id: "mock-rev-2",
+    userId: "STD-003",
     companyId: "5", // ID: 5 คือ บริษัท บานาน่า โคดดิ้ง
     companyName: "บริษัท บานาน่า โคดดิ้ง จำกัด",
     position: "Developer",
     rating: 5,
     detail: "มีการทำ Code Review ทุกอาทิตย์ ทำให้สกิลเขียนโปรแกรมพัฒนาขึ้นเยอะมาก พี่เลี้ยงใจดี ขนมในออฟฟิศเยอะด้วย!",
     date: "20 / 07 / 2026",
-    authorName: "รุ่นพี่ SE 66"
-  }
+    authorName: "นางสาวสาดไปสมาชิก"
+  },{
+    id: "mock-rev-3",
+    userId: "STD-004",
+    companyId: "2", // ID: 2 คือ บริษัท เก็ตออน เทคโนโลยี
+    companyName: "บริษัท เก็ตออน เทคโนโลยี จำกัด",
+    position: "Business Analyst",
+    rating: 4,
+    detail: "ได้เรียนรู้การเก็บ Requirement และทำ Document อย่างเป็นระบบ สังคมเพื่อนร่วมงานดีมากครับ แต่อาจจะมีความกดดันช่วงส่งมอบงานนิดหน่อย",
+    date: "15 / 08 / 2026",
+    authorName: "นายสีสัน ชีวิต"
+  },
 ];
 
 export const rawMockCompanies = [
