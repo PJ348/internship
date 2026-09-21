@@ -1,10 +1,10 @@
-import { rawMockCompanies } from './mockData.js';
+import { createCompanyManager, getCurrentUser } from './reviewService.js';
 document.addEventListener('DOMContentLoaded', () => {
     // ดึงข้อมูลบริษัทจาก URL และแสดงผลฝั่งซ้าย
     const urlParams = new URLSearchParams(window.location.search);
     const companyId = urlParams.get('id');
     // หาข้อมูลบริษัทใน mockData
-    const company = rawMockCompanies.find(c => String(c.id) === String(companyId));
+    const company = createCompanyManager().findById(companyId ?? '');
     if (company) {
         const companyImg = document.getElementById('company-img');
         const companyName = document.getElementById('company-name');
@@ -69,16 +69,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         </p>
                     </div>
                 `;
-                reviewListContainer.insertAdjacentHTML('afterbegin', cardHTML);
+                reviewListContainer.insertAdjacentHTML('beforeend', cardHTML);
             });
         }
     }
     // ดักจับเฉพาะปุ่ม เขียนรีวิว
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const user = getCurrentUser();
     const btnWriteReview = document.getElementById('btn-write-review');
     if (btnWriteReview) {
         btnWriteReview.addEventListener('click', (e) => {
-            if (!isLoggedIn) {
+            if (!user.canWriteReview()) {
                 e.preventDefault();
                 window.location.href = './login.html';
             }

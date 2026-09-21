@@ -1,26 +1,25 @@
 import type { Review } from './models.js';
-import { rawMockCompanies } from './mockData.js';
+import { createCompanyManager, getCurrentUser } from './reviewService.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     // ดึงข้อมูลบริษัทจาก URL และแสดงผลฝั่งซ้าย
     const urlParams = new URLSearchParams(window.location.search);
     const companyId = urlParams.get('id');
 
     // หาข้อมูลบริษัทใน mockData
-    const company = rawMockCompanies.find(c => String(c.id) === String(companyId));
-
+    const company = createCompanyManager().findById(companyId ?? '');
     if (company) {
         const companyImg = document.getElementById('company-img') as HTMLImageElement;
         const companyName = document.getElementById('company-name');
-        
+
         if (companyImg) companyImg.src = company.imageUrl;
         if (companyName) companyName.textContent = company.name;
     }
 
     // แสดงรีวิว (ดึงมาจาก LocalStorage)
     const reviewListContainer = document.getElementById('reviewListContainer') || document.querySelector('aside.flex-1.overflow-y-auto');
-    
+
     if (reviewListContainer) {
         const rawReviews = localStorage.getItem('user_reviews');
         let storedReviews: Review[] = rawReviews ? JSON.parse(rawReviews) : [];
@@ -44,8 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 let starsHTML = '';
                 const rating = Number(review.rating) || 5;
                 for (let i = 1; i <= 5; i++) {
-                    starsHTML += i <= rating 
-                        ? '<i class="fa-solid fa-star text-xs text-[#10B981]"></i>' 
+                    starsHTML += i <= rating
+                        ? '<i class="fa-solid fa-star text-xs text-[#10B981]"></i>'
                         : '<i class="fa-solid fa-star text-xs text-gray-300"></i>';
                 }
 
@@ -78,20 +77,20 @@ document.addEventListener('DOMContentLoaded', () => {
                         </p>
                     </div>
                 `;
-                reviewListContainer.insertAdjacentHTML('afterbegin', cardHTML);
+                reviewListContainer.insertAdjacentHTML('beforeend', cardHTML);
             });
         }
     }
 
     // ดักจับเฉพาะปุ่ม เขียนรีวิว
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const user = getCurrentUser();
     const btnWriteReview = document.getElementById('btn-write-review') as HTMLAnchorElement;
 
     if (btnWriteReview) {
         btnWriteReview.addEventListener('click', (e) => {
-            if (!isLoggedIn) {
-                e.preventDefault(); 
-                window.location.href = './login.html'; 
+            if (!user.canWriteReview()) {
+                e.preventDefault();
+                window.location.href = './login.html';
             } else if (company) {
                 e.preventDefault();
                 window.location.href = `./writereview.html?id=${company.id}`;

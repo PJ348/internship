@@ -1,11 +1,13 @@
-import type { Review } from './models';
+import type { Review } from './models.js';
+import { getCurrentUser, fillCompanySidebar } from './reviewService.js';
+
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. ดึง ID จาก URL (?id=...)
+    // ดึง ID จาก URL (?id=...)
     const urlParams = new URLSearchParams(window.location.search);
     const reviewId = urlParams.get('id');
 
-    // 2. ดึง Element จาก DOM
+    // ดึง Element จาก DOM
     const editForm = document.getElementById('edit-review-form') as HTMLFormElement | null;
     const positionInput = document.getElementById('input-position') as HTMLInputElement | null;
     const reviewInput = document.getElementById('input-review') as HTMLTextAreaElement | null;
@@ -16,13 +18,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const stars = starContainer.querySelectorAll<HTMLElement>('.star-btn');
 
-    // 3. ดึงรายการรีวิวทั้งหมดจาก localStorage
+    // ดึงรายการรีวิวทั้งหมดจาก localStorage
     const rawReviews = localStorage.getItem('user_reviews');
     let reviews: Review[] = rawReviews ? JSON.parse(rawReviews) : [];
 
-    // 4. ค้นหารีวิวที่ต้องการแก้ไข
+    // ค้นหารีวิวที่ต้องการแก้ไข
     const targetIndex = reviews.findIndex((r) => String(r.id) === String(reviewId));
     const currentReview = targetIndex !== -1 ? reviews[targetIndex] : null;
+
+    const user = getCurrentUser();
+    if (!currentReview || !user.canEditReview(currentReview.userId ?? '')) {
+        window.location.href = './profile.html';
+        return;
+    }
+    fillCompanySidebar(String(currentReview.companyId));
+    const dateEl = document.getElementById('review-date');
+    if (dateEl) dateEl.textContent = currentReview.date;
 
     let currentRating = 5;
 
@@ -41,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // 5. แสดงข้อมูลเดิมลงใน Form
+    // แสดงข้อมูลเดิมลงใน Form
     if (currentReview) {
         positionInput.value = currentReview.position || '';
         reviewInput.value = currentReview.detail || '';
@@ -50,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderStars(currentRating);
 
-    // 6. ระบบดาว Interactive (Hover & Click)
+    // ระบบดาว Interactive (Hover & Click)
     stars.forEach((star) => {
         const val = parseInt(star.getAttribute('data-value') || '0', 10);
 
@@ -63,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     starContainer.addEventListener('mouseleave', () => renderStars(currentRating));
 
-    // 7. บันทึกการแก้ไข
+    // บันทึกการแก้ไข
     editForm.addEventListener('submit', (e: Event) => {
         e.preventDefault();
 

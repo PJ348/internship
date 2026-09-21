@@ -1,19 +1,24 @@
+import { fillCompanySidebar } from './reviewService.js';
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. ดึง ID จาก URL (?id=...)
+    // ดึง ID จาก URL (?id=...)
     const urlParams = new URLSearchParams(window.location.search);
     const reviewId = urlParams.get('id');
-    // 2. ดึง Element จาก DOM
+    // ดึง Element จาก DOM
     const positionInput = document.getElementById('view-position');
     const reviewTextarea = document.getElementById('view-review');
     const ratingDisplay = document.getElementById('rating-display');
     const starIcons = document.querySelectorAll('.star-icon');
-    // 3. ดึงรายการรีวิวทั้งหมดจาก localStorage
+    // ดึงรายการรีวิวทั้งหมดจาก localStorage
     const rawReviews = localStorage.getItem('user_reviews');
     const reviews = rawReviews ? JSON.parse(rawReviews) : [];
-    // 4. ค้นหารีวิวตาม ID
+    // ค้นหารีวิวตาม ID
     const data = reviews.find((r) => String(r.id) === String(reviewId));
-    // 5. นำข้อมูลมาแสดงผล
+    // นำข้อมูลมาแสดงผล
     if (data) {
+        fillCompanySidebar(String(data.companyId));
+        const dateEl = document.getElementById('view-date');
+        if (dateEl)
+            dateEl.textContent = data.date;
         if (positionInput)
             positionInput.value = data.position || '';
         if (reviewTextarea)
@@ -36,5 +41,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-export {};
 //# sourceMappingURL=viewreview.js.map

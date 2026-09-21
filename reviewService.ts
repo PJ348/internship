@@ -1,36 +1,59 @@
-// import { StudentProfile, Review } from './models.js';
+import type { User, Review } from './models.js';
+import { rawMockCompanies } from './mockData.js';
+import { CompanyManager, Guest, Reviewer } from './models.js';
 
-// // ฟังก์ชัน: ดึงข้อมูลนิสิตปัจจุบันจาก LocalStorage
-// export const getCurrentUser = (): StudentProfile | null => {
-//   const data = localStorage.getItem('userData');
-//   return data ? JSON.parse(data) : null;
-// };
+export const getCurrentUser = (): User => {
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+        try {
+            const u = JSON.parse(localStorage.getItem('userData') || '{}');
+            return new Reviewer(u.id, u.email_uni);
+        } catch { /* ตกไปเป็น Guest */ }
+    }
+    return new Guest();
+};
 
-// // ฟังก์ชัน: เพิ่มรีวิวใหม่
-// export const addReview = (companyId: string, companyName: string, rating: number, content: string) => {
-//   const user = getCurrentUser();
-//   if (!user) return; // ถ้ายังไม่ล็อกอินให้หยุดทำงาน
+export const createCompanyManager = (): CompanyManager => {
+    const manager = new CompanyManager();
+    manager.loadMockData(rawMockCompanies);
+    manager.getAllCompanies().forEach(c => {
+        const { avg, count } = getCompanyStats(c.getCompanyInfo().id);
+        c.setStats(avg, count);
+    });
+    return manager;
+};
 
-//   const newReview: Review = {
-//     id: `rev-${Date.now()}`, // สร้าง ID แบบสุ่มจากเวลา
-//     companyId,
-//     companyName,
-//     rating,
-//     content,
-//     date: new Date().toISOString().split('T')[0] // ได้วันที่ปัจจุบัน YYYY-MM-DD
-//   };
+export const getAllReviews = (): Review[] => {
+    try {
+        const parsed = JSON.parse(localStorage.getItem('user_reviews') || '[]');
+        return Array.isArray(parsed) ? parsed : [parsed];
+    } catch { return []; }
+};
 
-//   user.reviews.push(newReview); // ดันข้อมูลใหม่เข้า Array
-//   localStorage.setItem('userData', JSON.stringify(user)); // เซฟทับข้อมูลเดิม
-// };
+export const saveAllReviews = (reviews: Review[]): void =>
+    localStorage.setItem('user_reviews', JSON.stringify(reviews));
 
-// // ฟังก์ชัน: ลบรีวิว
-// export const deleteReview = (reviewId: string) => {
-//   const user = getCurrentUser();
-//   if (!user) return;
+export const getCompanyStats = (companyId: string) => {
+    const list = getAllReviews().filter(r => String(r.companyId) === String(companyId));
+    const count = list.length;
+    const avg = count ? list.reduce((s, r) => s + (Number(r.rating) || 0), 0) / count : 0;
+    return { avg, count };
+};
 
-//   // กรองเอารีวิวที่ ID ไม่ตรงกับที่กดลบ เก็บไว้ (เป็นการลบตัวที่ตรงกันทิ้ง)
-//   user.reviews = user.reviews.filter(review => review.id !== reviewId);
-  
-//   localStorage.setItem('userData', JSON.stringify(user)); // เซฟทับข้อมูลเดิม
-// };
+export const fillCompanySidebar = (companyId: string): void => {
+    const company = createCompanyManager().findById(companyId);
+    const { avg, count } = getCompanyStats(companyId);
+
+    const img = document.getElementById('company-img') as HTMLImageElement | null;
+    const name = document.getElementById('company-name');
+    const rating = document.getElementById('company-rating');
+    const cnt = document.getElementById('company-review-count');
+    const stars = document.querySelectorAll<HTMLElement>('#company-stars i');
+
+    if (company && img) img.src = company.imageUrl;
+    if (company && name) name.textContent = company.name;
+    if (rating) rating.textContent = count ? avg.toFixed(1) : '-';
+    if (cnt) cnt.textContent = `Based on ${count} Reviews`;
+    stars.forEach((s, i) => {
+        s.classList.toggle('text-gray-300', i >= Math.round(avg));
+    });
+};

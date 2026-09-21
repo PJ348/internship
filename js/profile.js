@@ -1,16 +1,12 @@
 import { mockCurrentUser } from './mockData.js'; // นำเข้าข้อมูลจำลองของ User
+import { getCurrentUser } from './reviewService.js';
 document.addEventListener('DOMContentLoaded', () => {
-    // ==========================================
-    // 1. ระบบดักจับ (Page Guard)
-    // ==========================================
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    if (!isLoggedIn) {
+    // ระบบดักจับ (Page Guard)
+    if (!getCurrentUser().canWriteReview()) {
         window.location.href = './login.html';
         return;
     }
-    // ==========================================
-    // 2. แสดงข้อมูล Profile ฝั่งซ้าย จาก mockData
-    // ==========================================
+    // แสดงข้อมูล Profile ฝั่งซ้าย จาก mockData
     const currentUser = mockCurrentUser;
     const profileImg = document.getElementById('profile-img');
     const profileName = document.getElementById('profile-name');
@@ -32,13 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
         contactFacebook.textContent = currentUser.facebook;
         contactFacebook.href = `https://${currentUser.facebook}`;
     }
-    // ==========================================
-    // 3. ฟังก์ชัน Render แสดงผลรีวิว (ฝั่งขวา)
-    // ==========================================
+    // ฟังก์ชัน Render แสดงผลรีวิว (ฝั่งขวา)
     const profileReviewContainer = document.getElementById('profileReviewContainer');
     if (!profileReviewContainer)
         return;
     const renderProfileReviews = () => {
+        const user = getCurrentUser();
         const rawData = localStorage.getItem('user_reviews');
         let storedReviews = [];
         if (rawData) {
@@ -50,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 storedReviews = [];
             }
         }
+        storedReviews = storedReviews.filter(r => r.userId === user.getId());
         // กรณีไม่มีข้อมูลรีวิวในระบบ
         if (storedReviews.length === 0) {
             profileReviewContainer.innerHTML = `
@@ -76,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const reviewId = review.id || '1';
             const reviewDate = review.date || '31 / 08 / 2026';
             // ดึงชื่อผู้เขียนรีวิวมาจาก mockCurrentUser เป็นหลัก
-            const authorName = currentUser.name || review.authorName || 'ไม่ระบุชื่อ';
+            const authorName = review.authorName || currentUser.name || 'ไม่ระบุชื่อ';
             const positionName = review.position || 'Frontend Developer';
             const reviewCard = `
                 <div data-id="${reviewId}" class="review-card bg-white rounded-3xl w-full p-4 sm:p-5 border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
@@ -121,9 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // จัดการ Event ปุ่มต่างๆ หลังสร้างการ์ดเสร็จ
         attachCardEvents();
     };
-    // ==========================================
-    // 4. ฟังก์ชันจัดการ Event ของการ์ด (คลิก, ลบ)
-    // ==========================================
+    // ฟังก์ชันจัดการ Event ของการ์ด (คลิก, ลบ)
     const attachCardEvents = () => {
         const cards = profileReviewContainer.querySelectorAll('.review-card');
         cards.forEach((card) => {
@@ -148,9 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     };
-    // ==========================================
-    // 5. ฟังก์ชันลบข้อมูลรีวิว
-    // ==========================================
+    // ฟังก์ชันลบข้อมูลรีวิว
     const deleteReview = (id, cardElement) => {
         if (!id)
             return;
@@ -160,14 +152,16 @@ document.addEventListener('DOMContentLoaded', () => {
         let storedReviews = rawData ? JSON.parse(rawData) : [];
         if (!Array.isArray(storedReviews))
             storedReviews = [storedReviews];
-        // กรองเอาตัวที่ถูกลบออก
-        storedReviews = storedReviews.filter((item) => String(item.id) !== String(id));
+        // กรองเอาตัวที่ถูกลบออก 
+        storedReviews = storedReviews.filter(item => String(item.id) !== String(id));
         localStorage.setItem('user_reviews', JSON.stringify(storedReviews));
         // รอแอนิเมชันทำงานเสร็จ 300ms ค่อยลบออกจากจอจริง
         setTimeout(() => {
             cardElement.remove();
-            if (storedReviews.length === 0)
-                renderProfileReviews(); // ถ้าลบจนหมดให้ขึ้นข้อความ
+            // เดิมเช็ค storedReviews.length (รีวิวทั้งระบบ) → ต้องเช็คการ์ดที่เหลือบนจอ
+            if (profileReviewContainer.querySelectorAll('.review-card').length === 0) {
+                renderProfileReviews();
+            }
         }, 300);
     };
     // เริ่มการทำงานทั้งหมดเมื่อโหลดหน้า

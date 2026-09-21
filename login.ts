@@ -3,28 +3,22 @@ import { mockCurrentUser } from './mockData.js';
 document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('login-form') as HTMLFormElement;
   const emailInput = document.getElementById('email') as HTMLInputElement;
-  const  loginError = document.getElementById('loginError') as HTMLInputElement;
-  
-  if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault(); 
-      
-      const enteredEmail = emailInput?.value.trim();
-      
-      if (enteredEmail === mockCurrentUser.email_uni) {
-          localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem('userData', JSON.stringify(mockCurrentUser));
-          
-          const existingReviews = localStorage.getItem('user_reviews');
-          if (!existingReviews || existingReviews === '[]') {
-              localStorage.setItem('user_reviews', JSON.stringify(mockCurrentUser.reviews));
-          }
+  const passwordInput = document.getElementById('password') as HTMLInputElement;
+  const loginError = document.getElementById('loginError') as HTMLElement;
 
-          window.location.href = './index.html'; 
-      } else {
-          loginError.innerText = 'ไม่พบอีเมลนี้ในระบบ หรือกรอกอีเมลไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง';
-          emailInput.focus(); 
-      }
-    });
-  }
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const enteredEmail = emailInput.value.trim();
+    const enteredPassword = passwordInput.value;
+
+    if (enteredEmail === mockCurrentUser.email_uni && enteredPassword === mockCurrentUser.password) {
+      const { password, ...safeUser } = mockCurrentUser;
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userData', JSON.stringify(safeUser));
+      window.location.href = './index.html';
+    } else {
+      loginError.textContent = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง';
+      emailInput.focus();
+    }
+  });
 });

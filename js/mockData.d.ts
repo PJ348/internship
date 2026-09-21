@@ -8,19 +8,10 @@ export declare const mockCurrentUser: {
     email_personal: string;
     password: string;
     avatarUrl: string;
-    reviews: {
-        id: string;
-        companyId: string;
-        companyName: string;
-        position: string;
-        rating: number;
-        detail: string;
-        date: string;
-        authorName: string;
-    }[];
 };
 export declare const mockReviews: {
     id: string;
+    userId: string;
     companyId: string;
     companyName: string;
     position: string;
